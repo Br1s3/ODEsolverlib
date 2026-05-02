@@ -4,10 +4,10 @@
 
 
 #if defined(PROG1)
-#    define LIBODESOLVER_IMPLEMENTATION
-#    include "libODEsolver.h"
+#    define ODESOLVERLIB_IMPLEMENTATION
+#    include "ODEsolverlib.h"
 #elif defined(PROG2)
-#    include "libODEsolver.h"
+#    include "ODEsolverlib.h"
 #else
 #    include "ODEsolver.h"
 #endif
@@ -82,11 +82,11 @@ int main(int argc, char *argv[])
 
     int (*method[7])(const double dt, double t, double *x, double *v, double (*f)(double, double, double)) = {
 	sol_stiff_equ_format,
-	methode_euler_explicite,
-	methode_euler_simpletique,
-	methode_RK4,
-	methode_RK,
-	methode_Verlet
+	ExplicitEuler,
+	SymplecticEuler,
+	RK4,
+	RK,
+	Verlet
     };
 
     char all_names_methods[7][31] = {

@@ -32,7 +32,7 @@ static:
 # 	@echo [$@], [$^], [$<], [$?]
 
 
-libODEsolver.o: libODEsolver.h
+ODEsolverlib.o: ODEsolverlib.h
 	$(CC) -DLIBODESOLVER_IMPLEMENTATION -x c -c $<
 
 libODEsolver.so: ODEsolver.c
@@ -51,7 +51,7 @@ main: main.c | $(SAVE_FILE)
 	@echo Simple compilation of programs
 	$(CC) $< -o $@ -DPROG1 $(CFLAGS)
 else ifeq ($(MODE), P2)
-main: main.c libODEsolver.o | $(SAVE_FILE)
+main: main.c ODEsolverlib.o | $(SAVE_FILE)
 	@echo Compile with obj lib
 	$(CC) $< libODEsolver.o -o $@ -DPROG2 $(CFLAGS)
 else ifeq ($(MODE), PD)
