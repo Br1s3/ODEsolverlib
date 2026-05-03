@@ -1,5 +1,5 @@
-#ifndef ODESOLVER_H_INCLUED
-#define ODESOLVER_H_INCLUED
+#ifndef ODESOLVERLIB_H_INCLUED
+#define ODESOLVERLIB_H_INCLUED
 #include <math.h>
 
 
@@ -33,7 +33,6 @@ int DOPRI45(double stepSize, double Time, double err, double *x, double *v, doub
 # ifdef ODESOLVERLIB_IMPLEMENTATION
 
 
-// int methode_euler_explicite(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 {
     double vv = (*v);
@@ -45,7 +44,6 @@ int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(d
     return 0;
 }
 
-// int methode_euler_simpletique(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 {
     if (isnan(*v)) return -1;
@@ -56,7 +54,6 @@ int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)
     return 0;
 }
 
-// int methode_RK4(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 int RK4(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
     struct
@@ -97,7 +94,6 @@ int RK4(const double h, double t, double *x, double *v, double (*f)(double, doub
     return 0;
 }
 
-// int methode_RK(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 int RK(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
 #ifndef q
@@ -234,7 +230,7 @@ int RKAdjCoef(const int q, dt_struct P[q], const double A[][q], const double *B,
 
 // Change my mind by not modifying the *Time variable.
 // But let in comment the way to go back
-int methode_DOPRI45(double stepSize, double Time, double err, double *x, double *v, double (*f)(double, double, double))
+int DOPRI45(double stepSize, double Time, double err, double *x, double *v, double (*f)(double, double, double))
 {
 #ifndef q
 # define q 7
@@ -330,4 +326,4 @@ int methode_DOPRI45(double stepSize, double Time, double err, double *x, double 
 }
 
 # endif // ODESOLVERLIB_IMPLEMENTATION
-#endif // ODESOLVER_H_INCLUED
+#endif // ODESOLVERLIB_H_INCLUED

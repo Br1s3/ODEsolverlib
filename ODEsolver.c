@@ -2,7 +2,7 @@
 #include "ODEsolver.h"
 
 
-int methode_euler_explicite(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
+int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 {
     double vv = (*v);
     if (isnan(*v)) return -1;
@@ -13,7 +13,7 @@ int methode_euler_explicite(const double dt, double t, double *x, double *v, dou
     return 0;
 }
 
-int methode_euler_simpletique(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
+int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 {
     if (isnan(*v)) return -1;
     // (*v) = dt*(*a) + (*v);            // v(t+1) = dt*a(t) + v(t)
@@ -23,7 +23,7 @@ int methode_euler_simpletique(const double dt, double t, double *x, double *v, d
     return 0;
 }
 
-int methode_RK4(const double h, double t, double *x, double *v, double (*f)(double, double, double))
+int RK4(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
     struct
     {
@@ -63,7 +63,7 @@ int methode_RK4(const double h, double t, double *x, double *v, double (*f)(doub
     return 0;
 }
 
-int methode_RK(const double h, double t, double *x, double *v, double (*f)(double, double, double))
+int RK(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
 #ifndef q
 # define q 4
@@ -122,7 +122,7 @@ int methode_RK(const double h, double t, double *x, double *v, double (*f)(doubl
     return 0;
 }
 
-int methode_Verlet(const double h, double t, double *x, double *v, double (*f)(double, double, double))
+int Verlet(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
     struct
     {
@@ -162,7 +162,7 @@ typedef struct
 
 
 
-int methode_RK_row(const int q, Derive_temp P[q], const double A[][q], const double *B, const double *C, const double h, double t, double *x, double *v, double (*f)(double, double, double))
+int RKAdjCoef(const int q, Derive_temp P[q], const double A[][q], const double *B, const double *C, const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
     for (int i = 0; i < q; i++) {
 	P[i].tn = 0;
@@ -202,7 +202,7 @@ int methode_RK_row(const int q, Derive_temp P[q], const double A[][q], const dou
 
 // Change my mind by not modifying the *Time variable.
 // But let in comment the way to go back
-int methode_DOPRI45(double stepSize, double Time, double err, double *x, double *v, double (*f)(double, double, double))
+int DOPRI45(double stepSize, double Time, double err, double *x, double *v, double (*f)(double, double, double))
 {
 #ifndef q
 # define q 7
@@ -263,7 +263,7 @@ int methode_DOPRI45(double stepSize, double Time, double err, double *x, double 
 		h = startTime + stepSize - t;
 	    pas++;
 
-	    if (methode_RK_row(q, P, A, B5, C, h, t, x, v, f) < 0) return -1;
+	    if (RKAdjCoef(q, P, A, B5, C, h, t, x, v, f) < 0) return -1;
 	    // (*Time) = t;
 	    t = t + h;
 

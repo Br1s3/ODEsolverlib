@@ -33,7 +33,7 @@ static:
 
 
 ODEsolverlib.o: ODEsolverlib.h
-	$(CC) -DLIBODESOLVER_IMPLEMENTATION -x c -c $<
+	$(CC) -DODESOLVERLIB_IMPLEMENTATION -x c -c $<
 
 libODEsolver.so: ODEsolver.c
 	$(CC) $(CFLAGS) -DPROG3 -fPIC -shared -o $@ $<
@@ -48,19 +48,19 @@ ODEsolver.o: ODEsolver.c
 
 ifeq ($(MODE), P1)
 main: main.c | $(SAVE_FILE)
-	@echo Simple compilation of programs
+	@echo [INFO]: Simple compilation of programs
 	$(CC) $< -o $@ -DPROG1 $(CFLAGS)
 else ifeq ($(MODE), P2)
 main: main.c ODEsolverlib.o | $(SAVE_FILE)
-	@echo Compile with obj lib
-	$(CC) $< libODEsolver.o -o $@ -DPROG2 $(CFLAGS)
+	@echo [INFO]: Compile with obj lib
+	$(CC) $< ODEsolverlib.o -o $@ -DPROG2 $(CFLAGS)
 else ifeq ($(MODE), PD)
 main: main.c libODEsolver.so | $(SAVE_FILE)
-	@echo Compile the dynamique library
+	@echo [INFO]: Compile the dynamique library
 	$(CC) $< -o $@ -DPROG3 $(CFLAGS) -L. -lODEsolver -Wl,-rpath=./
 else ifeq ($(MODE), PS)
 main: main.c libODEsolver.a | $(SAVE_FILE)
-	@echo Compile the static library
+	@echo [INFO]: Compile the static library
 	$(CC) $< -o $@ -L. -lODEsolver -DPROG4 $(CFLAGS)
 else
 	@echo ERROR
