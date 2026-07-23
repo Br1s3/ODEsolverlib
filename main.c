@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     for (double step = 0, t = 0; step < (int)1.f/dt; step++, t += dt) {
 	t_buff[0][(int)step] = t;
 	if (method[0](dt, t, &tmp, &y_buff[0][(int)step], stiff_equation) < 0)
-	    fprintf(stderr, "ERROR: Computes methode_euler_simpletique\n");
+	    fprintf(stderr, "ERROR: Computes exact solution\n");
     }
 
     // All other method except DOPRI45
@@ -116,8 +116,9 @@ int main(int argc, char *argv[])
 	for (double step = 0, t = 0, y = 1; step < (int)1.f/dt; step++, t += dt) {
 	    t_buff[i][(int)step] = t;
 	    y_buff[i][(int)step] = y;
+	    // if (method[i](dt, t, &tmp, &y, stiff_equation) < 0)
 	    if (method[i](dt, t, &tmp, &y, stiff_equation) < 0)
-	        fprintf(stderr, "ERROR: Computes methode_euler_simpletique\n");
+	        fprintf(stderr, "ERROR: Computes %s\n", all_names_methods[i]);
 	}
     }
 
@@ -126,7 +127,7 @@ int main(int argc, char *argv[])
 	t_buff[6][(int)step] = t;
 	y_buff[6][(int)step] = y;
 	if (DOPRI45(dt, t, 0.001, &tmp, &y, stiff_equation) < 0)
-	     fprintf(stderr, "ERROR: Computes methode_DOPRI45\n");
+	    fprintf(stderr, "ERROR: Computes methode_DOPRI45\n");
     }
 
 

@@ -1,9 +1,9 @@
 #ifndef ODESOLVERLIB_H_INCLUED
 #define ODESOLVERLIB_H_INCLUED
-#include <math.h>
+#include <math.h>   // Used for: isnan(), pow()
+#include <stddef.h> // Used for: NULL
 
-
-#define ABS(x) ((x < 0) ? -(x) : (x))
+#define ABS(x) (((x) < 0) ? -(x) : (x))
 
 int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double));
 int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double));
@@ -35,6 +35,7 @@ int DOPRI45(double stepSize, double Time, double err, double *x, double *v, doub
 
 int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     double vv = (*v);
     if (isnan(*v)) return -1;
     // (*v) = dt*(*a) + (*v);               // v(t+1) = dt*a(t) + v(t)
@@ -46,6 +47,7 @@ int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(d
 
 int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     if (isnan(*v)) return -1;
     // (*v) = dt*(*a) + (*v);            // v(t+1) = dt*a(t) + v(t)
     (*v) = dt*((*f)(t, *x, *v)) + (*v);  // v(t+1) = dt*a(t) + v(t)
@@ -56,6 +58,7 @@ int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)
 
 int RK4(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     struct
     {
     	double tn;
@@ -82,8 +85,8 @@ int RK4(const double h, double t, double *x, double *v, double (*f)(double, doub
     P[3].tn = t + h;
     P[3].xn = (*x) + h*P[2].vn;
     P[3].vn = (*v) + h*P[2].an;
-    // P[3].xn = (*x) + 0.5f*h*P[2].vn;                // Meilleur coeficient que RK4 classique
-    // P[3].vn = (*v) + 0.5f*h*P[2].an;                // Meilleur coeficient que RK4 classique
+    // P[3].xn = (*x) + 0.5f*h*P[2].vn;                // Better coefficient than conventional RK4
+    // P[3].vn = (*v) + 0.5f*h*P[2].an;                // Better coefficient than conventional RK4
     P[3].an = (*f)(P[3].tn, P[3].xn, P[3].vn);
 
     (*x) = (*x) + h*(1.f/6.f)*(P[0].vn + 2.f*P[1].vn + 2.f*P[2].vn + P[3].vn);
@@ -96,6 +99,7 @@ int RK4(const double h, double t, double *x, double *v, double (*f)(double, doub
 
 int RK(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
 #ifndef q
 # define q 4
 #else
@@ -155,6 +159,7 @@ int RK(const double h, double t, double *x, double *v, double (*f)(double, doubl
 
 int Verlet(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     struct
     {
 	double tn;
@@ -192,6 +197,7 @@ typedef struct
 
 int RKAdjCoef(const int q, dt_struct P[q], const double A[][q], const double *B, const double *C, const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     for (int i = 0; i < q; i++) {
 	P[i].tn = 0;
 	P[i].xn = 0;
@@ -232,6 +238,7 @@ int RKAdjCoef(const int q, dt_struct P[q], const double A[][q], const double *B,
 // But let in comment the way to go back
 int DOPRI45(double stepSize, double Time, double err, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
 #ifndef q
 # define q 7
 #else

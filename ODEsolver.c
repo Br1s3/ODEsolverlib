@@ -1,9 +1,11 @@
-#include <math.h>
+#include <math.h>   // Used for: isnan(), pow()
+#include <stddef.h> // Used for: NULL
 #include "ODEsolver.h"
 
 
 int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     double vv = (*v);
     if (isnan(*v)) return -1;
     // (*v) = dt*(*a) + (*v);               // v(t+1) = dt*a(t) + v(t)
@@ -15,6 +17,7 @@ int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(d
 
 int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     if (isnan(*v)) return -1;
     // (*v) = dt*(*a) + (*v);            // v(t+1) = dt*a(t) + v(t)
     (*v) = dt*((*f)(t, *x, *v)) + (*v);  // v(t+1) = dt*a(t) + v(t)
@@ -25,6 +28,7 @@ int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)
 
 int RK4(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     struct
     {
     	double tn;
@@ -65,6 +69,7 @@ int RK4(const double h, double t, double *x, double *v, double (*f)(double, doub
 
 int RK(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
 #ifndef q
 # define q 4
 #else
@@ -124,6 +129,7 @@ int RK(const double h, double t, double *x, double *v, double (*f)(double, doubl
 
 int Verlet(const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     struct
     {
 	double tn;
@@ -164,6 +170,7 @@ typedef struct
 
 int RKAdjCoef(const int q, Derive_temp P[q], const double A[][q], const double *B, const double *C, const double h, double t, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
     for (int i = 0; i < q; i++) {
 	P[i].tn = 0;
 	P[i].xn = 0;
@@ -204,6 +211,7 @@ int RKAdjCoef(const int q, Derive_temp P[q], const double A[][q], const double *
 // But let in comment the way to go back
 int DOPRI45(double stepSize, double Time, double err, double *x, double *v, double (*f)(double, double, double))
 {
+    if ((f == NULL) || (x == NULL) || (v == NULL)) return -1;
 #ifndef q
 # define q 7
 #else
