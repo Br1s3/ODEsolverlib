@@ -1,7 +1,7 @@
 #ifndef SIMULTAION_NUMERIQUE_H_INCLUED
 #define SIMULTAION_NUMERIQUE_H_INCLUED
 
-#define ABS(x) (((x) < 0) ? -(x) : (x))
+#define ABS_ODESOLVER(x) (((x) < 0) ? -(x) : (x))
 
 int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double));
 int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double));

@@ -3,7 +3,7 @@
 #include <math.h>   // Used for: isnan(), pow()
 #include <stddef.h> // Used for: NULL
 
-#define ABS(x) (((x) < 0) ? -(x) : (x))
+#define ABS_ODESOLVER(x) (((x) < 0) ? -(x) : (x))
 
 int ExplicitEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double));
 int SymplecticEuler(const double dt, double t, double *x, double *v, double (*f)(double, double, double));
@@ -315,13 +315,13 @@ int DOPRI45(double stepSize, double Time, double err, double *x, double *v, doub
     	for (int i = 0; i < q; i++) {
     	    TE += (B5[i] - B4[i])*P[i].xn;
     	}
-    	TE = ABS(TE);
+    	TE = ABS_ODESOLVER(TE);
 
 	const double ErreurFinale = TE;
 	if (isnan(ErreurFinale)) return -1;
-	const double difErreur = ABS(ErreurDebut - ErreurFinale);
+	const double difErreur = ABS_ODESOLVER(ErreurDebut - ErreurFinale);
 	if (!firstTime)
-	    valeur = ABS(difErreur - DernierDifErreur);
+	    valeur = ABS_ODESOLVER(difErreur - DernierDifErreur);
 	DernierDifErreur = difErreur;
 	firstTime = 0;
     } while(valeur > err);

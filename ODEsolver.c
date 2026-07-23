@@ -288,13 +288,13 @@ int DOPRI45(double stepSize, double Time, double err, double *x, double *v, doub
     	for (int i = 0; i < q; i++) {
     	    TE += (B5[i] - B4[i])*P[i].xn;
     	}
-    	TE = ABS(TE);
+    	TE = ABS_ODESOLVER(TE);
 
 	const double ErreurFinale = TE;
 	if (isnan(ErreurFinale)) return -1;
-	const double difErreur = ABS(ErreurDebut - ErreurFinale);
+	const double difErreur = ABS_ODESOLVER(ErreurDebut - ErreurFinale);
 	if (!firstTime)
-	    valeur = ABS(difErreur - DernierDifErreur);
+	    valeur = ABS_ODESOLVER(difErreur - DernierDifErreur);
 	DernierDifErreur = difErreur;
 	firstTime = 0;
     } while(valeur > err);
